@@ -1,7 +1,10 @@
 # Tillampad_programering
 Project Overview
+
 Project Name: Clock and Temperature Project with Buzzer and Fan
+
 Author: Hampus Bengtsson
+
 Date: 2024-10-25
 
 Description
