@@ -1,41 +1,47 @@
 # Tillampad_programering
- This Arduino project controls a clock and temperature monitoring system, which also manages a fan, buzzer, and servo motor based on the temperature readings. Here’s a breakdown of the main parts of the code:
+Project Overview
+Project Name: Clock and Temperature Project with Buzzer and Fan
+Author: Hampus Bengtsson
+Date: 2024-10-25
 
-Libraries and Constants
+Description
+This project integrates a DS3231 Real-Time Clock (RTC) module to measure and display time on a 1306 OLED display. In addition to timekeeping, the system monitors ambient temperature and controls various components, including a servo motor, buzzer, and fan, based on the temperature readings.
+
+Components and Libraries Used
+Hardware:
+
+DS3231 RTC module for time and temperature measurement
+SSD1306 OLED display for user interface
+Servo motor for physical control based on temperature
+Buzzer for audio alerts
+Relay module to control the fan
 Libraries:
-RTClib.h: Interfaces with the DS3231 real-time clock (RTC).
-Wire.h: Enables I2C communication, used by the RTC and OLED.
-Servo.h: Controls the servo motor.
-U8glib.h: Controls the OLED display.
 
-Constants:
-tempThreshold is set to 22 °C. It’s the temperature threshold for activating the buzzer and fan.
-Objects and Pin Definitions
-RTC: RTC_DS3231 rtc manages the DS3231 RTC module.
-Servo: myServo controls the servo motor, attached to servoPin (pin 9).
-Buzzer and Relay Pins: buzzerPin (pin 10) and relayPin (pin 8) control the buzzer and fan, respectively.
-OLED: U8GLIB_SSD1306_128X64 u8g initializes the OLED display (128x64 resolution).
+RTClib for interacting with the DS3231 module
+Wire for I2C communication
+Servo for controlling the servo motor
+U8glib for driving the OLED display
+Functionality
+Time Display: The RTC module retrieves the current time, which is displayed in the format hh:mm:ss on the OLED screen and the serial monitor.
 
-setup() Function
-The setup() function initializes all the components:
-Serial Communication: Initializes serial for monitoring.
-RTC: Starts the RTC, sets the time to the current date and time based on the system.
-Servo, Buzzer, and Relay: Configures pins for the servo, buzzer, and relay, and initializes the relay (fan) to LOW (off).
+Temperature Measurement: The project continuously measures the ambient temperature using the DS3231 module and displays it alongside the time.
 
-loop() Function
-The loop() function runs continuously:
-Time and Temperature Retrieval: Gets the current time from the RTC and the temperature using getTemp().
-Serial Output: Prints the time and temperature to the serial monitor.
-OLED Display: Updates the OLED display using oledWrite().
-Servo Positioning: Adjusts the servo based on temperature using servoWrite().
-Buzzer and Fan Control: Uses checkTemperature() to activate the buzzer and fan if the temperature exceeds tempThreshold.
+Servo Control: The servo motor's position is adjusted based on the temperature reading, where temperatures are mapped to angles between 0 and 180 degrees.
 
-Helper Functions
-getTime(): Formats time into hh:mm:ss format for easier display.
-getTemp(): Reads the temperature from the DS3231 RTC module.
-oledWrite(): Writes both time and temperature to the OLED display.
-Starts by calling u8g.firstPage() and continues writing each page of the display with u8g.nextPage().
-servoWrite(): Maps the current temperature to an angle for the servo motor, within the range of 0 to 180 degrees.
-checkTemperature(): Controls the fan and buzzer based on the current temperature:
-Activates the buzzer and fan if the temperature is above tempThreshold.
-Deactivates both if the temperature falls below tempThreshold.
+Buzzer and Fan Control: A predefined temperature threshold (22°C) is set to activate the buzzer and fan. When the temperature exceeds this threshold, the buzzer sounds a tone at 250 Hz, and the fan is activated via a relay. Conversely, if the temperature falls below the threshold, both the buzzer and fan are turned off.
+
+Code Structure
+The setup() function initializes communication, sets up the RTC, attaches the servo, and configures the buzzer and relay pins.
+
+The loop() function continuously fetches the current time and temperature, updates the OLED display, adjusts the servo position, and checks the temperature to control the buzzer and fan accordingly.
+
+Helper functions:
+
+getTime(DateTime now) formats the time string.
+getTemp() retrieves the current temperature from the RTC module.
+oledWrite(DateTime now) updates the OLED display with the time and temperature.
+servoWrite(float temperature) maps the temperature to a servo angle.
+checkTemperature(float temperature) manages the activation of the buzzer and fan based on the temperature threshold.
+
+Conclusion
+This project effectively combines timekeeping and environmental monitoring in a compact system. It demonstrates the use of multiple components working in unison to provide real-time data and responsive control based on temperature, making it suitable for various applications, such as smart home systems or climate control projects.
